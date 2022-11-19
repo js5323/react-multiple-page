@@ -1,29 +1,29 @@
 const path = require("path");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const htmlWebpackPlugin = require("html-webpack-plugin");
+const { separator } = require("./config");
+const { getEntryTemplate } = require("./helper");
+
+// 将packages拆分成为数组 ['editor','home']
+const packages = process.env.packages.split(separator);
+
+// 调用getEntryTemplate 获得对应的entry和htmlPlugins
+const { entry, htmlPlugins } = getEntryTemplate(packages);
 
 module.exports = {
-  // 入口文件，这里之后会着重强调
-  entry: {
-    index1: path.resolve(__dirname, "../src/containers/index1/index.tsx"),
-    index2: path.resolve(__dirname, "../src/containers/index2/index.tsx"),
+  // 动态替换entry
+  entry,
+  resolve: {
+    alias: {
+      "@src": path.resolve(__dirname, "../src"),
+    },
+    mainFiles: ["index", "main"],
+    extensions: [".ts", ".tsx", ".scss", "json", ".js"],
   },
   module: {
     rules: [
       {
         test: /\.(t|j)sx?$/,
         use: "babel-loader",
-      },
-      {
-        test: /\.(png|jpe?g|svg|gif)$/,
-        type: "asset/inline",
-      },
-      {
-        test: /\.(eot|ttf|woff|woff2)$/,
-        type: "asset/resource",
-        generator: {
-          filename: "fonts/[hash][ext][query]",
-        },
       },
       {
         test: /\.(sa|sc)ss$/,
@@ -47,27 +47,24 @@ module.exports = {
           },
         ],
       },
+      {
+        test: /\.(png|jpe?g|svg|gif)$/,
+        type: "asset/inline",
+      },
+      {
+        test: /\.(eot|ttf|woff|woff2)$/,
+        type: "asset/resource",
+        generator: {
+          filename: "fonts/[hash][ext][query]",
+        },
+      },
     ],
-  },
-  resolve: {
-    alias: {
-      "@": path.resolve(__dirname, "../src"),
-    },
-    extensions: [".tsx", ".ts", ".js", ".scss", ".css"],
   },
   plugins: [
     new MiniCssExtractPlugin({
       filename: "assets/[name].css",
     }),
-    new htmlWebpackPlugin({
-      filename: "index1.html",
-      template: path.resolve(__dirname, "../public/index.html"),
-      chunks: ["index1"],
-    }),
-    new htmlWebpackPlugin({
-      filename: "index2.html",
-      template: path.resolve(__dirname, "../public/index.html"),
-      chunks: ["index2"],
-    }),
+    // 同时动态生成对应的htmlPlugins
+    ...htmlPlugins,
   ],
 };
