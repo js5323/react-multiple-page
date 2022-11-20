@@ -1,17 +1,40 @@
 const path = require("path");
-const { CleanWebpackPlugin } = require("clean-webpack-plugin");
-const FriendlyErrorsWebpackPlugin = require("friendly-errors-webpack-plugin");
 const { merge } = require("webpack-merge");
-const baseConfig = require("./webpack.base");
+const config = require("./config");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const { getEntryTemplate } = require("./utils");
+const baseConfig = require("./webpack.base.js");
 
-const prodConfig = {
-  mode: "production",
-  devtool: "source-map",
-  output: {
-    filename: "js/[name].js",
-    path: path.resolve(__dirname, "../dist"),
-  },
-  plugins: [new CleanWebpackPlugin(), new FriendlyErrorsWebpackPlugin()],
+module.exports = function (options) {
+  const prodConfig = {
+    mode: "production",
+    devtool: "source-map",
+    plugins: [
+      new MiniCssExtractPlugin({
+        filename: `${config.staticPath}/css/[name].[hash:8].css`,
+      }),
+    ],
+    optimization: {
+      emitOnErrors: true,
+      minimizer: [
+        {
+          apply: (compiler) => {
+            // Lazy load the Terser plugin
+            const TerserPlugin = require("terser-webpack-plugin");
+            new TerserPlugin({
+              // terserOptions参考 https://github.com/webpack-contrib/terser-webpack-plugin#terseroptions
+              terserOptions: {
+                // terser的默认行为会把某些对象方法转为箭头函数，导致ios9等不支持箭头函数的环境白屏，详情见 https://github.com/terser/terser#compress-options
+                compress: {
+                  arrows: false,
+                },
+              },
+            }).apply(compiler);
+          },
+        },
+      ],
+    },
+  };
+
+  return merge(prodConfig, baseConfig(options));
 };
-
-module.exports = merge(prodConfig, baseConfig);

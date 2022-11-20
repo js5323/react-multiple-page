@@ -1,70 +1,83 @@
 const path = require("path");
+const { resolve, getEntryTemplate } = require("./utils");
+const config = require("./config");
+const FriendlyErrorsWebpackPlugin = require("friendly-errors-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const { separator } = require("./config");
-const { getEntryTemplate } = require("./helper");
 
-// 将packages拆分成为数组 ['editor','home']
-const packages = process.env.packages.split(separator);
+module.exports = function ({ production, mode, packages }) {
+  // 调用getEntryTemplate 获得对应的entry和htmlPlugins
+  const { entry, htmlPlugins } = getEntryTemplate(mode, packages);
 
-// 调用getEntryTemplate 获得对应的entry和htmlPlugins
-const { entry, htmlPlugins } = getEntryTemplate(packages);
-
-module.exports = {
-  // 动态替换entry
-  entry,
-  resolve: {
-    alias: {
-      "@src": path.resolve(__dirname, "../src"),
+  return {
+    entry,
+    output: {
+      filename: `${config.staticPath}/js/[name].[contenthash:8].js`,
+      path: path.resolve(__dirname, `../dist`),
+      publicPath: `/`,
     },
-    mainFiles: ["index", "main"],
-    extensions: [".ts", ".tsx", ".scss", "json", ".js"],
-  },
-  module: {
-    rules: [
-      {
-        test: /\.(t|j)sx?$/,
-        use: "babel-loader",
+    resolve: {
+      alias: {
+        "@": path.resolve(__dirname, "../src"),
       },
-      {
-        test: /\.(sa|sc)ss$/,
-        use: [
-          {
-            loader: MiniCssExtractPlugin.loader,
-          },
-          "css-loader",
-          "postcss-loader",
-          {
-            loader: "resolve-url-loader",
-            options: {
-              keepQuery: true,
-            },
-          },
-          {
-            loader: "sass-loader",
-            options: {
-              sourceMap: true,
-            },
-          },
-        ],
+      mainFiles: ["index", "main"],
+      extensions: [".ts", ".tsx", ".scss", "json", ".js"],
+    },
+    cache: {
+      type: "filesystem",
+      buildDependencies: {
+        build: [resolve("scripts/")],
       },
-      {
-        test: /\.(png|jpe?g|svg|gif)$/,
-        type: "asset/inline",
-      },
-      {
-        test: /\.(eot|ttf|woff|woff2)$/,
-        type: "asset/resource",
-        generator: {
-          filename: "fonts/[hash][ext][query]",
+      cacheDirectory: resolve(".cache/"),
+    },
+    snapshot: {
+      // 如果希望修改node_modules下的文件时对应的缓存可以失效，可以将此处的配置改为 managedPaths: []
+      managedPaths: [resolve("node_modules/")],
+    },
+    module: {
+      rules: [
+        {
+          test: /\.(t|j)sx?$/,
+          use: "babel-loader",
         },
-      },
-    ],
-  },
-  plugins: [
-    new MiniCssExtractPlugin({
-      filename: "assets/[name].css",
-    }),
-    // 同时动态生成对应的htmlPlugins
-    ...htmlPlugins,
-  ],
+        {
+          test: /\.(sa|sc)ss$/,
+          use: [
+            production && {
+              loader: MiniCssExtractPlugin.loader,
+            },
+            !production && "style-loader",
+            "css-loader",
+            "postcss-loader",
+            {
+              loader: "resolve-url-loader",
+              options: {
+                keepQuery: true,
+              },
+            },
+            {
+              loader: "sass-loader",
+              options: {
+                sourceMap: true,
+              },
+            },
+          ].filter((a) => !!a),
+        },
+        {
+          test: /\.(png|jpe?g|svg|gif)$/,
+          type: "asset/resource",
+          generator: {
+            filename: `${config.mediaPath}/imgs/[name].[contenthash:8][ext][query]`,
+          },
+        },
+        {
+          test: /\.(eot|ttf|woff|woff2)$/,
+          type: "asset/resource",
+          generator: {
+            filename: `${config.mediaPath}/fonts/[name].[contenthash:8][ext][query]`,
+          },
+        },
+      ],
+    },
+    plugins: [...htmlPlugins, new FriendlyErrorsWebpackPlugin()],
+  };
 };

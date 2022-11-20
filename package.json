@@ -7,10 +7,10 @@
   "author": "Ben <js5323@hotmail.com>",
   "license": "MIT",
   "scripts": {
-    "dev": "node ./scripts/dev.js",
-    "build": "webpack --config ./scripts/webpack.base.js"
+    "watch:app": "node ./scripts/build.js -w -m app",
+    "build:app": "node ./scripts/build.js -p -m app",
+    "build:module": "node ./scripts/build.js -p -m module"
   },
-  "type": "module",
   "devDependencies": {
     "@babel/core": "^7.20.2",
     "@babel/plugin-transform-runtime": "^7.19.6",
@@ -22,18 +22,21 @@
     "@types/react-dom": "^18.0.9",
     "autoprefixer": "^10.4.13",
     "babel-loader": "^9.1.0",
-    "chalk": "^5.1.2",
+    "chalk": "^2.3.2",
     "css-loader": "^6.7.2",
     "cssnano": "^5.1.14",
     "execa": "^6.1.0",
+    "friendly-errors-webpack-plugin": "^1.7.0",
     "html-webpack-plugin": "^5.5.0",
-    "inquirer": "^9.1.4",
+    "inquirer": "^8.0.0",
     "mini-css-extract-plugin": "^2.7.0",
     "postcss": "^8.4.19",
     "postcss-loader": "^7.0.1",
     "resolve-url-loader": "^5.0.0",
     "sass": "^1.56.1",
     "sass-loader": "^13.2.0",
+    "style-loader": "^3.3.1",
+    "terser-webpack-plugin": "^5.3.6",
     "ts-loader": "^9.4.1",
     "typescript": "^4.9.3",
     "webpack": "^5.75.0",
@@ -41,6 +44,7 @@
     "webpack-dev-server": "^4.11.1"
   },
   "dependencies": {
+    "commander": "6",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   }
