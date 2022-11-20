@@ -1,6 +1,13 @@
 const path = require("path");
 const fs = require("fs");
-const { dirMapping, MAIN_FILE, pagePath, staticPath } = require("./config");
+const {
+  dirMapping,
+  MAIN_FILE,
+  MODULE_FILE,
+  pagePath,
+  staticPath,
+} = require("./config");
+const ModuleFederationPlugin = require("webpack/lib/container/ModuleFederationPlugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 function resolveSrc(file, subDir = "") {
@@ -66,12 +73,34 @@ const getEntryTemplate = (mode, packages) => {
       new HtmlWebpackPlugin({
         template: path.resolve(__dirname, "../public/index.html"),
         filename: `${pagePath}/${packageName}.html`,
-        // publicPath: ``,
         chunks: ["manifest", "vendors", packageName],
       })
     );
   });
   return { entry, htmlPlugins };
+};
+
+// 根据入口文件list生成对应的htmlWebpackPlugin
+// 同时返回对应wepback需要的入口和htmlWebpackPlugin
+const getModuleFederationPlugins = (mode, packages) => {
+  const dirPath = getDirPath(mode);
+  const modulePlugins = [];
+  const entry = Object.create(null);
+  packages.forEach((packageName) => {
+    entry[packageName] = path.join(dirPath, packageName, MAIN_FILE);
+    modulePlugins.push(
+      new ModuleFederationPlugin({
+        name: packageName,
+        // 模块文件名称，其他应用引入当前模块时需要加载的文件的名字
+        filename: `${staticPath}/modules/${packageName}/index.js`,
+        // 当前模块具体导出的内容
+        exposes: {
+          "./Bootstrap": path.join(dirPath, packageName, MODULE_FILE),
+        },
+      })
+    );
+  });
+  return { entry, modulePlugins };
 };
 
 module.exports = {
@@ -84,4 +113,5 @@ module.exports = {
   getDirPath,
   getEntry,
   getEntryTemplate,
+  getModuleFederationPlugins,
 };

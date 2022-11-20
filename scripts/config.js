@@ -19,6 +19,7 @@ const log = (message, types) => {
 module.exports = {
   // 规定固定的入口文件名 {packages|modules}/**/index.tsx
   MAIN_FILE: "index.tsx",
+  MODULE_FILE: "bootstrap.tsx",
   log,
   // 因为环境变量的注入是通过字符串方式进行注入的
   // 所以当 打包多个文件时 我们通过*进行连接 比如 home和editor 注入的环境变量为home*editor

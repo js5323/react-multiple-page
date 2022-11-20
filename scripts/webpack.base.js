@@ -1,16 +1,16 @@
 const path = require("path");
-const { resolve, getEntryTemplate } = require("./utils");
+const {
+  resolve,
+  getEntryTemplate,
+  getModuleFederationPlugins,
+} = require("./utils");
 const config = require("./config");
 const FriendlyErrorsWebpackPlugin = require("friendly-errors-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 module.exports = function ({ production, mode, packages }) {
-  // 调用getEntryTemplate 获得对应的entry和htmlPlugins
-  const { entry, htmlPlugins } = getEntryTemplate(mode, packages);
-
-  return {
+  const baseConf = {
     name: `${mode}-compiler`,
-    entry,
     output: {
       filename: `${config.staticPath}/js/[name].[contenthash:8].js`,
       path: path.resolve(__dirname, `../dist`),
@@ -79,6 +79,21 @@ module.exports = function ({ production, mode, packages }) {
         },
       ],
     },
-    plugins: [...htmlPlugins, new FriendlyErrorsWebpackPlugin()],
+    plugins: [new FriendlyErrorsWebpackPlugin()],
   };
+
+  if (mode === "app") {
+    // 调用getEntryTemplate 获得对应的entry和htmlPlugins
+    const { entry, htmlPlugins } = getEntryTemplate(mode, packages);
+    baseConf.entry = entry;
+    baseConf.plugins.push(...htmlPlugins);
+  }
+
+  if (mode === "module") {
+    const { entry, modulePlugins } = getModuleFederationPlugins(mode, packages);
+    baseConf.entry = entry;
+    baseConf.plugins.push(...modulePlugins);
+  }
+
+  return baseConf;
 };

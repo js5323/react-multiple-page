@@ -1,7 +1,6 @@
-import React from "react";
-import { createRoot } from "react-dom/client";
+import bootstrap from "./bootstrap";
 
-const Element = <div>fm1</div>;
-
-const root = createRoot(document.querySelector("#root"));
-root.render(Element);
+const rootEle = document.querySelector("#root");
+if (rootEle) {
+  bootstrap(rootEle);
+}

@@ -9,6 +9,7 @@
   "scripts": {
     "watch:app": "node ./scripts/build.js -w -m app",
     "build:app": "node ./scripts/build.js -p -m app",
+    "watch:module": "node ./scripts/build.js -w -m module",
     "build:module": "node ./scripts/build.js -p -m module"
   },
   "devDependencies": {
