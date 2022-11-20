@@ -11,7 +11,7 @@ module.exports = function (options) {
     devtool: "source-map",
     plugins: [
       new MiniCssExtractPlugin({
-        filename: `${config.staticPath}/css/[name].[hash:8].css`,
+        filename: `${config.staticPath}/css/[name].[chunkhash:8].css`,
       }),
     ],
     optimization: {

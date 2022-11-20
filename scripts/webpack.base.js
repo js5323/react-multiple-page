@@ -9,6 +9,7 @@ module.exports = function ({ production, mode, packages }) {
   const { entry, htmlPlugins } = getEntryTemplate(mode, packages);
 
   return {
+    name: `${mode}-compiler`,
     entry,
     output: {
       filename: `${config.staticPath}/js/[name].[contenthash:8].js`,

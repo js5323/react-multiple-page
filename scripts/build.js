@@ -25,7 +25,7 @@ const env = process.env;
 const report = env.npm_config_report;
 
 try {
-  rm.sync(resolveDist(program.mode, "*"));
+  rm.sync(resolveDist("", "*"));
 } catch (e) {
   console.error(e);
   console.log(
