@@ -45,7 +45,12 @@ module.exports = {
     // 启动的端口
     port: 5000,
   },
+  // 是否开启 SRI 策略
+  integrity: true,
+  // 页面路径
   pagePath: "content/hk/test",
+  // 媒体文件（img/svg/font/json）路径
   mediaPath: "content/dam/test",
+  // js/css 路径
   staticPath: "etc/designs/test",
 };

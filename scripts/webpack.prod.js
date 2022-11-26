@@ -1,6 +1,7 @@
 const { merge } = require("webpack-merge");
 const config = require("./config");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const { SubresourceIntegrityPlugin } = require("webpack-subresource-integrity");
 const baseConfig = require("./webpack.base.js");
 
 module.exports = function (options) {
@@ -33,6 +34,14 @@ module.exports = function (options) {
       ],
     },
   };
+
+  if (config.integrity) {
+    // the following setting is required for SRI to work:
+    prodConfig.output = {
+      crossOriginLoading: "anonymous",
+    };
+    prodConfig.plugins.push(new SubresourceIntegrityPlugin());
+  }
 
   return merge(prodConfig, baseConfig(options));
 };
