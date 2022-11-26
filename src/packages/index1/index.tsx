@@ -3,6 +3,7 @@ import { createRoot } from "react-dom/client";
 import svgImg from "../../assets/test.svg";
 import jpgImg from "../../assets/test.jpg";
 
+import "@/styles/main.scss";
 import "./style.scss";
 
 const Element = (
