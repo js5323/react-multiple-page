@@ -4,6 +4,8 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const { SubresourceIntegrityPlugin } = require("webpack-subresource-integrity");
 const baseConfig = require("./webpack.base.js");
 const { BundleAnalyzerPlugin } = require("webpack-bundle-analyzer");
+const CopyPlugin = require("copy-webpack-plugin");
+const { resolve } = require("./utils");
 
 module.exports = function (options) {
   const prodConfig = {
@@ -12,6 +14,23 @@ module.exports = function (options) {
     plugins: [
       new MiniCssExtractPlugin({
         filename: `${config.staticPath}/css/[name].[contenthash:8].css`,
+      }),
+      /**
+       * 拷贝public中的文件到最终打包文件夹里
+       * https://github.com/webpack-contrib/copy-webpack-plugin
+       * */
+      new CopyPlugin({
+        patterns: [
+          {
+            from: resolve("public"),
+            to: resolve("dist"),
+            context: "public/",
+            globOptions: {
+              ignore: ["**/index.html"],
+            },
+            noErrorOnMissing: true,
+          },
+        ],
       }),
     ],
     optimization: {
