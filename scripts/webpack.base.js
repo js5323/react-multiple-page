@@ -5,8 +5,9 @@ const {
   getModuleFederationPlugins,
 } = require("./utils");
 const config = require("./config");
-const FriendlyErrorsWebpackPlugin = require("friendly-errors-webpack-plugin");
+const FriendlyErrorsWebpackPlugin = require("@nuxt/friendly-errors-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const WebpackBar = require("webpackbar");
 
 module.exports = function ({ production, mode, packages }) {
   const baseConf = {
@@ -51,9 +52,10 @@ module.exports = function ({ production, mode, packages }) {
             "postcss-loader",
             {
               loader: "resolve-url-loader",
-              options: {
-                keepQuery: true,
-              },
+              // DeprecationWarning: "keepQuery" option has been removed, the query and/or hash are now always retained
+              // options: {
+              //   keepQuery: true,
+              // },
             },
             {
               loader: "sass-loader",
@@ -94,6 +96,13 @@ module.exports = function ({ production, mode, packages }) {
     baseConf.entry = entry;
     baseConf.plugins.push(...modulePlugins);
   }
+
+  let progressPlugin = new WebpackBar({
+    color: "#85d", // 默认green，进度条颜色支持HEX
+    basic: false, // 默认true，启用一个简单的日志报告器
+    profile: false, // 默认false，启用探查器。
+  });
+  baseConf.plugins.push(progressPlugin);
 
   return baseConf;
 };

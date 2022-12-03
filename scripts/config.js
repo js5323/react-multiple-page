@@ -47,6 +47,7 @@ module.exports = {
   },
   // 是否开启 SRI 策略
   integrity: true,
+  crossOrigin: false,
   // 页面路径
   pagePath: "content/hk/test",
   // 媒体文件（img/svg/font/json）路径

@@ -10,6 +10,8 @@ const Element = (
   <div>
     <img src={svgImg} alt='' />
     <img src={jpgImg} alt='' />
+    hello ~ ~
+    <svg />
   </div>
 );
 

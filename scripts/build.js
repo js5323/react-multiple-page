@@ -13,8 +13,10 @@ const webpackDev = require("./webpack.dev");
 
 program
   .option("-m, --mode <mode>", "build mode")
+  .option("-a, --all", "build all")
   .option("-w, --watch", "watch mode")
   .option("-p, --production", "production release")
+  .option("-an, --analysis", "analysis production release")
   .parse(process.argv);
 
 const isProduct = program.production;
@@ -35,7 +37,9 @@ try {
 
 choosePackageConfig(
   {
+    all: program.all,
     mode: program.mode,
+    analysis: program.analysis,
     production: isProduct,
     watch: isWatch,
     report,
@@ -113,6 +117,18 @@ function choosePackageConfig(options, callback) {
   const entry = getEntry(mode);
   // 获取packages下的所有文件
   const packagesList = [...Object.keys(entry)];
+  if (options.all) {
+    const opt = { ...options, packages: packagesList };
+
+    if (production) {
+      callback(webpackProd(opt));
+    } else {
+      callback(webpackDev(opt));
+    }
+
+    return;
+  }
+
   // 至少保证一个
   if (!packagesList.length) {
     log(
