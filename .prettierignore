@@ -1,0 +1,10 @@
+//.prettierignore 
+**/*.min.js
+**/*.min.css
+
+.idea/
+.vscode/
+public/
+node_modules/
+dist/
+scripts/

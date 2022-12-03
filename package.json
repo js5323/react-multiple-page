@@ -13,7 +13,8 @@
     "dev:app": "node ./scripts/build.js --watch --mode app",
     "build:app": "node ./scripts/build.js --production --mode app",
     "watch:module": "node ./scripts/build.js --watch --mode module",
-    "build:module": "node ./scripts/build.js --production --mode module"
+    "build:module": "node ./scripts/build.js --production --mode module",
+    "prepare": "husky install"
   },
   "devDependencies": {
     "@babel/core": "^7.20.2",
@@ -25,18 +26,26 @@
     "@types/node": "^18.11.9",
     "@types/react": "^18.0.25",
     "@types/react-dom": "^18.0.9",
+    "@typescript-eslint/eslint-plugin": "^5.45.0",
+    "@typescript-eslint/parser": "^5.45.0",
     "autoprefixer": "^10.4.13",
     "babel-loader": "^9.1.0",
     "chalk": "^2.3.2",
     "copy-webpack-plugin": "^11.0.0",
     "css-loader": "^6.7.2",
     "cssnano": "^5.1.14",
+    "eslint": "^8.29.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-react": "^7.31.11",
     "execa": "^6.1.0",
     "html-webpack-plugin": "^5.5.0",
+    "husky": "^8.0.0",
     "inquirer": "^8.0.0",
+    "lint-staged": "^13.0.4",
     "mini-css-extract-plugin": "^2.7.0",
     "postcss": "^8.4.19",
     "postcss-loader": "^7.0.1",
+    "prettier": "2.8.0",
     "resolve-url-loader": "^5.0.0",
     "sass": "^1.56.1",
     "sass-loader": "^13.2.0",
@@ -57,5 +66,9 @@
     "commander": "6",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
+  },
+  "lint-staged": {
+    "*.{js,css,md,ts,tsx,jsx}": "prettier --write",
+    "*.{js,jsx,tsx,ts}": "eslint --cache --fix"
   }
 }

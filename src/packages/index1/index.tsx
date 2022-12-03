@@ -1,10 +1,10 @@
-import React from "react";
-import { createRoot } from "react-dom/client";
-import svgImg from "../../assets/test.svg";
-import jpgImg from "../../assets/test.jpg";
+import React from 'react';
+import { createRoot } from 'react-dom/client';
+import svgImg from '../../assets/test.svg';
+import jpgImg from '../../assets/test.jpg';
 
-import "@/styles/main.scss";
-import "./style.scss";
+import '@/styles/main.scss';
+import './style.scss';
 
 const Element = (
   <div>
@@ -15,5 +15,5 @@ const Element = (
   </div>
 );
 
-const root = createRoot(document.querySelector("#root"));
+const root = createRoot(document.querySelector('#root'));
 root.render(Element);
