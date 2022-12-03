@@ -49,7 +49,7 @@ module.exports = {
   integrity: true,
   crossOrigin: false,
   // 页面路径
-  pagePath: "content/hk/test",
+  pagePath: "",
   // 媒体文件（img/svg/font/json）路径
   mediaPath: "content/dam/test",
   // js/css 路径

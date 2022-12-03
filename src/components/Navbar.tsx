@@ -1,14 +1,15 @@
-import * as React from "react";
+import { NavLink } from 'react-router-dom';
 
-export interface INavbarProps {}
+const Navbar = () => {
+  const genLinkClassName = ({ isActive }: { isActive: boolean }) =>
+    `nav-link ${isActive ? 'active' : ''}`;
 
-export function Navbar(props: INavbarProps) {
   return (
     <nav className='navbar navbar-expand-lg bg-light'>
       <div className='container'>
-        <a className='navbar-brand' href='#'>
+        <NavLink className='navbar-brand' to='/'>
           Navbar
-        </a>
+        </NavLink>
         <button
           className='navbar-toggler'
           type='button'
@@ -23,26 +24,25 @@ export function Navbar(props: INavbarProps) {
         <div className='collapse navbar-collapse' id='navbarNav'>
           <ul className='navbar-nav'>
             <li className='nav-item'>
-              <a className='nav-link active' aria-current='page' href='#'>
+              <NavLink to='/' className={genLinkClassName}>
                 Home
-              </a>
+              </NavLink>
             </li>
             <li className='nav-item'>
-              <a className='nav-link' href='#'>
+              <NavLink to='/features' className={genLinkClassName}>
                 Features
-              </a>
+              </NavLink>
             </li>
             <li className='nav-item'>
-              <a className='nav-link' href='#'>
+              <NavLink to='/pricing' className={genLinkClassName}>
                 Pricing
-              </a>
-            </li>
-            <li className='nav-item'>
-              <a className='nav-link disabled'>Disabled</a>
+              </NavLink>
             </li>
           </ul>
         </div>
       </div>
     </nav>
   );
-}
+};
+
+export default Navbar;

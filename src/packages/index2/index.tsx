@@ -1,9 +1,8 @@
-import React from "react";
-import { createRoot } from "react-dom/client";
+import { createRoot } from 'react-dom/client';
 
-import "@/styles/main.scss";
-import "./style.scss";
-import { Navbar } from "./components/Navbar";
+import '@/styles/main.scss';
+import './style.scss';
+import Navbar from '@/components/Navbar';
 
 const Element = (
   <div className='wrapper'>
@@ -15,5 +14,5 @@ const Element = (
   </div>
 );
 
-const root = createRoot(document.querySelector("#root"));
+const root = createRoot(document.querySelector('#root'));
 root.render(Element);
