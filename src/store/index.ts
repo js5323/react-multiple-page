@@ -1,7 +1,7 @@
 import { COMMON_STORE } from './../config/storageKeys';
 import { configureStore } from '@reduxjs/toolkit';
-import home from './reducers/home';
 import { throttle } from 'lodash';
+import home from './reducers/home';
 
 const loadState = () => {
   try {

@@ -13,7 +13,7 @@ const Home = () => {
 
       <p>{count}</p>
 
-      <button onClick={() => dispatcher(increment())} className='btn btn-primary'>
+      <button onClick={() => dispatcher(increment())} className='btn btn-primary me-5'>
         increment
       </button>
       <button onClick={() => dispatcher(decrement())} className='btn btn-secondary'>

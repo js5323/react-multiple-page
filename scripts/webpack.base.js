@@ -12,6 +12,7 @@ const WebpackBar = require("webpackbar");
 module.exports = function ({ production, mode, packages }) {
   const baseConf = {
     name: `${mode}-compiler`,
+    stats: 'errors-warnings',
     output: {
       filename: `${config.staticPath}/js/[name].[contenthash:8].js`,
       path: path.resolve(__dirname, `../dist`),
