@@ -1,10 +1,10 @@
+import { useAppSelector } from '@/hooks/redux-hooks';
 import { RootState } from '@/store';
 import { decrement, increment } from '@/store/reducers/home';
-import { useSelector } from 'react-redux/es/exports';
 import { useDispatch } from 'react-redux/es/hooks/useDispatch';
 
 const Home = () => {
-  const count = useSelector((state: RootState) => state.home.value);
+  const count = useAppSelector((state: RootState) => state.home.value);
   const dispatcher = useDispatch();
 
   return (

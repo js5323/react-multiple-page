@@ -6,6 +6,8 @@ import store from '@/store';
 
 import '@/styles/main.scss';
 
+import './style/style.scss';
+
 const App = () => {
   const element = useRoutes(routes as unknown as RouteObject[]);
 

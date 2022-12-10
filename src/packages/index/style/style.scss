@@ -1,7 +1,14 @@
-body {
+.pricing-container {
   background-color: #898989;
 
-  img {
-    width: 500px;
+
+  .loading-txt {
+    display: none;
+  }
+
+  &.loading {
+    .loading-txt {
+      display: block;
+    }
   }
 }
