@@ -10,7 +10,7 @@ const { resolve } = require("./utils");
 module.exports = function (options) {
   const prodConfig = {
     mode: "production",
-    devtool: "source-map",
+    devtool: "hidden-source-map",
     plugins: [
       new MiniCssExtractPlugin({
         filename: `${config.staticPath}/css/[name].[contenthash:8].css`,
