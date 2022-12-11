@@ -6,6 +6,8 @@ const error = chalk.bold.red;
 const warning = chalk.hex("#FFA500");
 const success = chalk.green;
 
+const mediaPath = "media/path/test";
+
 const maps = {
   success,
   warning,
@@ -37,6 +39,7 @@ module.exports = {
     // 这样的话就可以访问到static/directory下的资源了
     static: {
       directory: path.join(__dirname, "../public"),
+      publicPath: `/${mediaPath}`
     },
     // 默认为true
     hot: true,
@@ -51,7 +54,7 @@ module.exports = {
   // 页面路径
   pagePath: "",
   // 媒体文件（img/svg/font/json）路径
-  mediaPath: "content/dam/test",
+  mediaPath,
   // js/css 路径
   staticPath: "etc/designs/test",
 };

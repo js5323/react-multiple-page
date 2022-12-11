@@ -23,7 +23,7 @@ module.exports = function (options) {
         patterns: [
           {
             from: resolve("public"),
-            to: resolve("dist"),
+            to: resolve(`dist/${config.mediaPath}`),
             context: "public/",
             globOptions: {
               ignore: ["**/index.html"],
